@@ -43,7 +43,11 @@ public final class WRSAUtil {
         buffer.flush();
         byte[] keyBytes = buffer.toByteArray();
 
-        byte[] decoded = Base64.getDecoder().decode(keyBytes);
+        // remove Header
+        String keyWithHeader = new String(keyBytes);
+        keyWithHeader = removePrivateKeyHeader(keyWithHeader);
+
+        byte[] decoded = Base64.getDecoder().decode(keyWithHeader);
 
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(decoded);
         KeyFactory kf = KeyFactory.getInstance(WAlgorithm.RSA);
@@ -62,7 +66,11 @@ public final class WRSAUtil {
         buffer.flush();
         byte[] keyBytes = buffer.toByteArray();
 
-        byte[] decoded = Base64.getDecoder().decode(keyBytes);
+        // remove Header
+        String keyWithHeader = new String(keyBytes);
+        keyWithHeader = removePublicKeyHeader(keyWithHeader);
+
+        byte[] decoded = Base64.getDecoder().decode(keyWithHeader);
 
         X509EncodedKeySpec spec = new X509EncodedKeySpec(decoded);
         KeyFactory kf = KeyFactory.getInstance(WAlgorithm.RSA);

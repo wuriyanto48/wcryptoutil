@@ -1,7 +1,11 @@
 package com.wuriyanto.wcryptoutil;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.security.Key;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 /**
  * Hello world!
@@ -11,12 +15,23 @@ public class App {
 
     public static void main( String[] args ) {
 
+        FileInputStream privateKeyStream = null;
+        FileInputStream publicKeyStream = null;
         try {
             WRSAUtil rsaUtil = new WRSAUtil(WRSAUtil.KEY_SIZE_2KB);
             rsaUtil.generateKeyPair();
 
             System.out.println(rsaUtil.getPrivateKeyFormat());
             System.out.println(rsaUtil.getPrivateKeyBase64());
+
+            File privateKeyFile = new File("/Users/wuriyanto/Documents/cpp-work/CppEnc/goca/private_key_pkcs8.pem");
+            File publicKeyFile = new File("/Users/wuriyanto/Documents/cpp-work/CppEnc/goca/public_key.pem");
+
+            privateKeyStream = new FileInputStream(privateKeyFile);
+            publicKeyStream = new FileInputStream(publicKeyFile);
+
+            PrivateKey privateKey = WRSAUtil.loadPrivateKey(privateKeyStream);
+            PublicKey publicKey = WRSAUtil.loadPublicKey(publicKeyStream);
 
             System.out.println("--------------------");
 
@@ -28,13 +43,13 @@ public class App {
 
             System.out.println(WKeyUtil.hexEncode(WKeyUtil.generateRandomSymmetricKey().getEncoded()));
 
-            System.out.println("--------------------");
+            System.out.println("--------- encryption -----------");
 
             Key key = WKeyUtil.from("ewd$#128djdyAgbjau&YAnmcbagryt5x");
 
             String data = "hello world";
 
-            WEncryption wEncryption = new WRSAEncryption(rsaUtil.getPrivateKey(), rsaUtil.getPublicKey());
+            WEncryption wEncryption = new WRSAEncryption(privateKey, publicKey);
 
             EncryptResult encryptResult = wEncryption.encrypt(data.getBytes());
             System.out.println(encryptResult.getNonce());
@@ -45,16 +60,30 @@ public class App {
             byte[] plainTextBytes = wEncryption.decrypt(encryptResult.getData(), null);
             System.out.println(new String(plainTextBytes));
 
-            System.out.println("--------------------");
+            System.out.println("--------- signature -----------");
 
             WDigitalSignature digitalSignature = new WRSADigitalSignature();
 
-            byte[] signature = digitalSignature.sign(rsaUtil.getPrivateKey(), encryptResult.getData());
+            byte[] signature = digitalSignature.sign(privateKey, encryptResult.getData());
 
-            boolean signatureValid = digitalSignature.verify(rsaUtil.getPublicKey(), encryptResult.getData(), signature);
+            boolean signatureValid = digitalSignature.verify(publicKey, encryptResult.getData(), signature);
             System.out.println(signatureValid);
+
+            System.out.println("---------- digest ----------");
+
+            System.out.println(WDigest.sha256("helloworld".getBytes()));
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (privateKeyStream != null)
+                    privateKeyStream.close();
+
+                if (publicKeyStream != null)
+                    publicKeyStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
