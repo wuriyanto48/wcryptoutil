@@ -30,7 +30,7 @@ public final class WRSAUtil {
     }
 
     // required private key with PKCS8 format
-    // convert your RSA Private Key to PKCS8 format fist
+    // convert your RSA Private Key to PKCS8 format first
     // $ openssl pkcs8 -topk8 -inform PEM -in private_key.pem -out private_key_pkcs8.pem -nocrypt
     public static PrivateKey loadPrivateKey(InputStream inputStream) throws Exception {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
