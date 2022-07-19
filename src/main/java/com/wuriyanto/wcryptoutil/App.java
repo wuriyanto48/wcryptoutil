@@ -18,6 +18,16 @@ public class App {
         FileInputStream privateKeyStream = null;
         FileInputStream publicKeyStream = null;
         try {
+            String keyWury = "secret-keysecret-keysecret-key00";
+            String messageWury = "wuriyanto musobar";
+            String hmacResult = WHmac.sha256(keyWury.getBytes(), messageWury.getBytes());
+            System.out.println("hmacResult");
+            System.out.println(hmacResult);
+
+            String hashSha256Result = WDigest.sha256(messageWury.getBytes());
+            System.out.println("hashSha256Result");
+            System.out.println(hashSha256Result);
+
             WRSAUtil rsaUtil = new WRSAUtil(WRSAUtil.KEY_SIZE_2KB);
             rsaUtil.generateKeyPair();
 

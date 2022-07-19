@@ -34,7 +34,14 @@ public final class WKeyUtil {
     public static Key from(byte[] key) throws Exception {
         if (key.length < KEY_SIZE)
             throw new Exception("key cannot less than " + KEY_SIZE);
-        SecretKeySpec secretKeySpec = new SecretKeySpec(key, WAlgorithm.AES);
+        SecretKeySpec secretKeySpec = from(key, WAlgorithm.AES);
+        return secretKeySpec;
+    }
+
+    public static SecretKeySpec from(byte[] key, String alg) throws Exception {
+        if (key.length < KEY_SIZE)
+            throw new Exception("key cannot less than " + KEY_SIZE);
+        SecretKeySpec secretKeySpec = new SecretKeySpec(key, alg);
         return secretKeySpec;
     }
 
