@@ -3,7 +3,7 @@ package com.wuriyanto.wcryptoutil;
 import java.security.Key;
 import javax.crypto.Mac;
 
-public class WHmac {
+public final class WHmac {
 
     private WHmac() {
 
