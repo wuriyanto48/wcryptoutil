@@ -28,6 +28,10 @@ public class App {
             System.out.println("hashSha256Result");
             System.out.println(hashSha256Result);
 
+            String hashMd5Result = WDigest.md5(messageWury.getBytes());
+            System.out.println("hashMd5Result");
+            System.out.println(hashMd5Result);
+
             WRSAUtil rsaUtil = new WRSAUtil(WRSAUtil.KEY_SIZE_2KB);
             rsaUtil.generateKeyPair();
 

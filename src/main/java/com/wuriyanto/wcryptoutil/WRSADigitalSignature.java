@@ -13,6 +13,10 @@ public final class WRSADigitalSignature implements WDigitalSignature {
         signature = Signature.getInstance(WAlgorithm.SHA_512_RSA_SIGN);
     }
 
+    public WRSADigitalSignature(String alg) throws Exception {
+        signature = Signature.getInstance(alg);
+    }
+
     @Override
     public byte[] sign(PrivateKey privateKey, byte[] data) throws Exception {
         SecureRandom secureRandom = new SecureRandom();
