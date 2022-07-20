@@ -1,6 +1,8 @@
 package com.wuriyanto.wcryptoutil;
 
 import java.security.Key;
+import java.util.Arrays;
+
 import javax.crypto.Mac;
 
 public final class WHmac {
@@ -32,6 +34,10 @@ public final class WHmac {
     public static String sha512(byte[] key, byte[]... data) throws Exception {
         Mac mac = init(key, WAlgorithm.HMAC_SHA512_KEY_GENERATOR, WAlgorithm.HMAC_SHA512_MAC);
         return doFinal(mac, data);
+    }
+
+    public static boolean equals(byte[] m1, byte[] m2) {
+        return Arrays.equals(m1, m2);
     }
 
     private static Mac init(byte[] key, String keyGeneratorAlg, String alg) throws Exception{

@@ -20,11 +20,15 @@ public class App {
         try {
             String keyWury = "secret-keysecret-keysecret-key00";
             String messageWury = "wuriyanto musobar";
-            String hmacResult = WHmac.sha256(keyWury.getBytes(), messageWury.getBytes());
+            String hmacResult = WHmac.sha256(keyWury.getBytes(), messageWury.getBytes(), "bony".getBytes());
+            String hmacResult2 = WHmac.sha256(keyWury.getBytes(), messageWury.getBytes());
+
             System.out.println("hmacResult");
             System.out.println(hmacResult);
+            System.out.println("hmacResult equals");
+            System.out.println(WHmac.equals(hmacResult.getBytes(), hmacResult2.getBytes()));
 
-            String hashSha256Result = WDigest.sha256(messageWury.getBytes());
+            String hashSha256Result = WDigest.sha256(messageWury.getBytes(), "bony".getBytes()); 
             System.out.println("hashSha256Result");
             System.out.println(hashSha256Result);
 
